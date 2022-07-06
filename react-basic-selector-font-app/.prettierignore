@@ -1,0 +1,7 @@
+node_modules
+.gitignore
+*.ico
+.prettierignore
+.stylelintignore
+yarn.lock
+public/*

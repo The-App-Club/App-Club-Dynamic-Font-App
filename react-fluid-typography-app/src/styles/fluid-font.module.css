@@ -1,0 +1,23 @@
+/* https://zenn.dev/ixkaito/articles/fluid-typography */
+.fluidFont {
+  --viewport-unit-converter: 1vw;
+  --fz-from: var(--font-size-from, var(--min-font-size));
+  --fz-to: var(--font-size-to, var(--max-font-size));
+  --fz-slope: (var(--fz-to) - var(--fz-from)) /
+    (var(--viewport-to) - var(--viewport-from)) * 100;
+  --fz-intercept: (
+      var(--viewport-to) * var(--fz-from) - var(--viewport-from) * var(--fz-to)
+    ) / (var(--viewport-to) - var(--viewport-from));
+  --font-size: calc(
+    var(--fz-slope) * var(--viewport-unit-converter) + var(--fz-intercept) * 1px
+  );
+
+  --min-fz-px: calc(var(--min-font-size) * 1px);
+  --max-fz-px: calc(var(--max-font-size) * 1px);
+  --clamp: clamp(var(--min-fz-px), var(--font-size), var(--max-fz-px));
+  --max: var(--has-max, var(--min));
+  --min: var(--has-min, var(--font-size));
+  --has-max: min(var(--max-fz-px), var(--font-size));
+  --has-min: max(var(--min-fz-px), var(--font-size));
+  font-size: var(--clamp, var(--max));
+}

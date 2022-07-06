@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Kosugi&display=swap');
+
+$minViewportWidth: 400;
+$maxViewportWidth: 1400;
+$gap: 5;
+$padding: 5;
+$color: orange;
+
+// ブレイクポイント記法よりアスペクト比が使えるならそちらを採用するか
+// aspect-ratio
+
+$bp: (
+  mobile: 480px,
+  tablet: 768px,
+  desktop: 1440px,
+);
+
+// https://css-tricks.com/snippets/css/fluid-typography/
+// https://css-tricks.com/how-do-you-do-max-font-size-in-css/
+// rem記法でフォントサイズを定義する
+// 原型はこれだが、今はrem
+// https://qiita.com/katsunory/items/3bede89cee8e2ded8426
+
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  @media screen and (min-aspect-ratio: 7/10) {
+    font-size: 10 / $maxViewportWidth * 100vw;
+  }
+  @media screen and (min-device-aspect-ratio: 7/10) {
+    font-size: 10 / $maxViewportWidth * 100vw;
+  }
+
+  @media screen and (max-aspect-ratio: 7/10) {
+    font-size: 10 / $minViewportWidth * 100vw;
+  }
+  @media screen and (max-device-aspect-ratio: 7/10) {
+    font-size: 10 / $minViewportWidth * 100vw;
+  }
+}
+
+@mixin query($display) {
+  @each $key, $value in $bp {
+    @if ($display == $key) {
+      @media screen and (max-width: $value) {
+        @content;
+      }
+      @media screen and (max-device-width: $value) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin deviceSpRatio() {
+  @media screen and (max-aspect-ratio: 7/10) {
+    @content;
+  }
+  @media screen and (max-device-aspect-ratio: 7/10) {
+    @content;
+  }
+}
+
+@mixin devicePcRatio() {
+  @media screen and (min-aspect-ratio: 7/10) {
+    @content;
+  }
+  @media screen and (min-device-aspect-ratio: 7/10) {
+    @content;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: #{$gap}px;
+  padding: #{$padding}px;
+
+  @include query(mobile) {
+    flex-direction: column;
+  }
+}
+
+[class^='block-'] {
+  border: 4px solid $color;
+  height: 100vh - $padding * 2;
+}
+
+.block-1 {
+  flex-grow: 2;
+}
+
+.block-2 {
+  flex-grow: 8;
+}
+
+@include deviceSpRatio() {
+  h1 {
+    font-size: 3.4rem;
+  }
+  h2 {
+    font-size: 3.2rem;
+  }
+  h3 {
+    font-size: 3rem;
+  }
+  h4 {
+    font-size: 2.8rem;
+  }
+  h5 {
+    font-size: 2.6rem;
+  }
+  h6 {
+    font-size: 2.4rem;
+  }
+  p {
+    font-size: 2.4rem;
+    word-wrap: break-word;
+  }
+  div {
+    font-size: 1.5rem;
+  }
+}
+
+@include devicePcRatio() {
+  h1 {
+    font-size: 3.4rem * 1.2;
+  }
+  h2 {
+    font-size: 3.2rem * 1.2;
+  }
+  h3 {
+    font-size: 3rem * 1.2;
+  }
+  h4 {
+    font-size: 2.8rem * 1.2;
+  }
+  h5 {
+    font-size: 2.6rem * 1.2;
+  }
+  h6 {
+    font-size: 2.4rem * 1.2;
+  }
+  p {
+    font-size: 2.4rem * 1.2;
+    word-wrap: break-word;
+  }
+  div {
+    font-size: 1.5rem * 1.2;
+  }
+}
